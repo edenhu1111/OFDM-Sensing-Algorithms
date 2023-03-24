@@ -65,9 +65,7 @@ velocity_2dfft = velocity_2dfft(1:10*N);
 
 [X,Y] = meshgrid(range_2dfft,velocity_2dfft);
 
-% RDM_2dfft_norm = 10*log10( abs(RDM_2dfft) /
-% max(abs(RDM_2dfft),[],'all')); 
-RDM_2dfft_norm = 10*log10( abs(real(RDM_2dfft)) / max(abs(real(RDM_2dfft)),[],'all'));
+RDM_2dfft_norm = 10*log10( abs(RDM_2dfft)/max(abs(RDM_2dfft),[],'all')); 
 % Maximized Likelihood Estimation(In theory)
 
 surf(X,Y,(RDM_2dfft_norm));

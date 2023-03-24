@@ -2,6 +2,7 @@
 % CIM: Input channel information matrix(pre-processed by known transmitted symbols)
 % k:target number
 % Author: Yunbo HU(SIMIT, UCAS)
+% GitHub: https://github.com/edenhu1111
 function [P_music_range,P_music_velo] = MUSICforOFDMsensing(CIM,k)
 global M N c0 delta_f lambda Ts
 %% range estimation

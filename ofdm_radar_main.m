@@ -1,6 +1,13 @@
 %% A comparison of OFDM Radar signal processing methods
 % Description: This project compares some classical sensing algorithm.
+% Algorithms in this project:
+%
+% 1. 2DFFT
+% 2. Cyclic Cross Correlation
+% 3. Super Resolution Estimation: MUSIC and TLS-ESPRIT
+%
 % Author: Yunbo HU (SIMIT, UCAS)
+% GitHub: https://github.com/edenhu1111
 clc;
 clear;
 addpath('fig');
@@ -57,12 +64,19 @@ velocity_2dfft = linspace(0,lambda/2/Ts,10*N+1);
 velocity_2dfft = velocity_2dfft(1:10*N);
 
 [X,Y] = meshgrid(range_2dfft,velocity_2dfft);
-RDM_2dfft_norm = 10*log10( abs(RDM_2dfft) / max(abs(RDM_2dfft),[],'all'));
+
+% RDM_2dfft_norm = 10*log10( abs(RDM_2dfft) /
+% max(abs(RDM_2dfft),[],'all')); 
+RDM_2dfft_norm = 10*log10( abs(real(RDM_2dfft)) / max(abs(real(RDM_2dfft)),[],'all'));
+% Maximized Likelihood Estimation(In theory)
+
 surf(X,Y,(RDM_2dfft_norm));
 title('2D-FFT based method');
 xlabel('range(m)');
 ylabel('velocity(m/s)');
 savefig('fig/figure1.fig');
+
+
 % 2. CCC-based     (Method proposed by Kai Wu et al.)
 figure(2);
 % setting parameters for CCC-based sensing method

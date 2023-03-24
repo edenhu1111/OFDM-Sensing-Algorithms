@@ -11,6 +11,7 @@
 % SNR: Signal-to-noise Ratio
 %
 % Author: Yunbo HU (SIMIT, UCAS)
+% GitHub: https://github.com/edenhu1111
 %% Code
 function RxSignal = sensingSignalGen(TxSignal_cp,range,velocity,SNR)
     global c0 lambda M delta_f

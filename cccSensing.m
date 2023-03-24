@@ -9,6 +9,7 @@
 %
 % mildQ: length of VCP(Virtual Cyclic Prefix)
 % Code Author: Yunbo HU
+% GitHub: https://github.com/edenhu1111
     % Reference: K. Wu, J. A. Zhang, X. Huang, and Y. J. Guo, 
     %¡®Integrating Low-Complexity and Flexible Sensing Into Communication Systems¡¯, 
     %  IEEE Journal on Selected Areas in Communications

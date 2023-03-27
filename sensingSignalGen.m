@@ -15,19 +15,22 @@
 %% Code
 function RxSignal = sensingSignalGen(TxSignal_cp,range,velocity,SNR)
     global c0 lambda M delta_f
-    delay = round(2 * range / c0 * delta_f * M);
+    delay = 2 * range / c0;
     h_gain = exp(1j*2*pi*rand(size(delay)));    
     doppler = 2*velocity/lambda;
-    max_delay = max(delay,[],'all');
-    RxSignal = zeros(size(TxSignal_cp,1)+max_delay,1);
+%     max_delay = max(delay,[],'all');
+%     RxSignal = zeros(size(TxSignal_cp,1) + max_delay,1);
+    RxSignal = zeros(size(TxSignal_cp,1)    ,1);
     d = zeros(size(TxSignal_cp));
     for p = 1:length(delay)
         ii = 0:length(d)-1;
         d = exp(1j*2*pi*doppler(p)*ii'/(delta_f*M));
-        RxSignal = RxSignal + h_gain(p) * ...
-            [zeros(delay(p),1);...
-            TxSignal_cp .* d...
-            ;zeros(max_delay-delay(p),1)];
+        tau = exp(-1j*2*pi*delay(p)*delta_f*M/length(d)*ii');
+%         RxSignal = RxSignal + h_gain(p) * ...
+%             [zeros(delay(p),1);...
+%             TxSignal_cp .* d...
+%             ;zeros(max_delay-delay(p),1)];
+        RxSignal = RxSignal + h_gain(p)*ifft(fft(TxSignal_cp.*d).*tau);
     end
     RxSignal = RxSignal + 10^(-SNR/10)*(randn(size(RxSignal)) + 1j*randn(size(RxSignal)))/sqrt(2);
 end

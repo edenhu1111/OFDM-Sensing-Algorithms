@@ -11,7 +11,7 @@
 clc;
 clear;
 addpath('fig');
-global c0 fc lambda M N delta_f Ts
+global c0 fc lambda M N delta_f Ts CPsize
 %% ISAC Transmitter
 % System parameters
 c0 = 3e+8;  % velocity of light
@@ -24,7 +24,7 @@ T = 1 / delta_f; % symbol duration
 Tcp = T / 4; % cyclic prefix duration
 Ts = T + Tcp; % total symbol duration
 CPsize = M / 4; % cyclic prefix length
-bitsPerSymbol = 4; % bits per symbol
+bitsPerSymbol = 2; % bits per symbol
 qam = 2^(bitsPerSymbol); % 16-QAM modulation
 
 % Transmit data
@@ -38,7 +38,7 @@ TxSignal_cp = reshape(TxSignal_cp, [], 1); % time-domain transmit signal
 
 %% Channel
 % Sensing Data Generation
-SNR = 10;
+SNR = 30;
 RxSignal = sensingSignalGen(TxSignal_cp, 30,20,SNR);
 
 
@@ -74,7 +74,7 @@ xlabel('range(m)');
 ylabel('velocity(m/s)');
 savefig('fig/figure1.fig');
 
-
+                                                                                                                            
 % 2. CCC-based     (Method proposed by Kai Wu et al.)
 figure(2);
 % setting parameters for CCC-based sensing method
@@ -112,7 +112,7 @@ CIM = Rx_dem ./(TxData);
 figure(3);
 title('MUSIC for OFDM sensing');
 subplot(1,2,1);
-plot(linspace(0,100,M),abs(P_music_range)/max(abs(P_music_range)));
+plot(linspace(0,100,length(P_music_range)),abs(P_music_range)/max(abs(P_music_range)));
 ylabel('Pmusic');
 xlabel('range(m)');
 ylim([10^-3,1]);

@@ -39,8 +39,10 @@ TxSignal_cp = reshape(TxSignal_cp, [], 1); % time-domain transmit signal
 %% Channel
 % Sensing Data Generation
 SNR = 30;
-RxSignal = sensingSignalGen(TxSignal_cp, 30,20,SNR);
-
+r = [30];  % range.(it can be a row vector)
+v = [20];  %velocity
+RxSignal = sensingSignalGen(TxSignal_cp, r,v,SNR);
+k = length(r);
 
 %% OFDM Radar Receivers
 
@@ -68,7 +70,7 @@ velocity_2dfft = velocity_2dfft(1:10*N);
 RDM_2dfft_norm = 10*log10( abs(RDM_2dfft)/max(abs(RDM_2dfft),[],'all')); 
 % Maximized Likelihood Estimation(In theory)
 
-surf(X,Y,(RDM_2dfft_norm));
+mesh(X,Y,(RDM_2dfft_norm));
 title('2D-FFT based method');
 xlabel('range(m)');
 ylabel('velocity(m/s)');
@@ -95,7 +97,7 @@ doppler_ccc = doppler_ccc(1:10*mildN);
 
 RDM_norm = 10*log10(abs(RDM)/max(abs(RDM),[],'all'));
 [X,Y] = meshgrid(range_ccc,doppler_ccc);
-surf(X,Y,(RDM_norm)); % plot the range-doppler map
+mesh(X,Y,(RDM_norm)); % plot the range-doppler map
 title('CCC based method');
 xlabel('range(m)');
 ylabel('velocity(m/s)');
@@ -103,9 +105,9 @@ savefig('fig/figure2.fig');
 
 % 3. Super resolution sensing method
 % 3.1 MUSIC based (a time consuming but precise method)
-CIM = Rx_dem ./(TxData); 
+CIM = Rx_dem .*conj(TxData); 
 
-[P_music_range,P_music_velo] = MUSICforOFDMsensing(CIM,1);
+[P_music_range,P_music_velo] = MUSICforOFDMsensing(CIM,k);
 
 
 % plot the MUSIC power spectrum
@@ -127,7 +129,7 @@ title('MUSIC for velocity estimation');
 savefig('fig/figure3.fig');
 
 % 3.2 ESPRIT based method
-[range,velocity] = ESPRITforOFDMsensing(CIM,1);
+[range,velocity] = ESPRITforOFDMsensing(CIM,k);
 fprintf('The estimation result of TLS-ESPRIT is :\n');
 fprintf('Range = %f\n',range);
 fprintf('Velocity = %f\n',velocity);
